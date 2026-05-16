@@ -1,8 +1,0 @@
-MainServer,Trojan
-MainServer,BotnetAttack
-UserDB,SQLAttack
-UserDB,WannaCry
-AndroidPhone,EmailScam
-SmartCamera,BotnetAttack
-OfficePC,Trojan
-OfficePC,EmailScam

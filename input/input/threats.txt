@@ -1,8 +1,0 @@
-MainServer,Trojan,Malware,8
-MainServer,BotnetAttack,DDoS,9
-UserDB,SQLAttack,SQLInjection,7
-UserDB,WannaCry,Ransomware,9
-AndroidPhone,EmailScam,Phishing,6
-SmartCamera,BotnetAttack,DDoS,9
-OfficePC,Trojan,Malware,8
-OfficePC,EmailScam,Phishing,6
