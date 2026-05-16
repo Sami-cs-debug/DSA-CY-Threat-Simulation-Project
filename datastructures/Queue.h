@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-// ── ATTACK JOB ────────────────────────────────────────────────
+// ── ATTACK JOB ───────────────────────────────────────────────
 // One attack job holds which system is being attacked
 // and which threat is doing the attacking
 struct AttackJob {
