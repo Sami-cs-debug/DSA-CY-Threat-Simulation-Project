@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-// ── STACK DATA STRUCTURE ──────────────────────────────────────
+// ── STACK DATA STRUCTURE ─────────────────────────────────────
 // Works like a pile of plates
 // You can only add or remove from the TOP
 // This is called LIFO - Last In First Out
