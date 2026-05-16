@@ -1,5 +1,0 @@
-MainServer,7
-UserDB,6
-AndroidPhone,5
-SmartCamera,8
-OfficePC,4
