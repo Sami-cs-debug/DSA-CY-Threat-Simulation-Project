@@ -4,7 +4,7 @@
 #include "datastructures/Queue.h"
 using namespace std;
 
-// ── FILE HANDLER ──────────────────────────────────────────────
+// ── FILE HANDLER ─────────────────────────────────────────────
 // Reads all three input text files
 // Fills Array LinkedList and Queue with data
 // No file reading means no data in the system
