@@ -4,29 +4,28 @@
 #include "datastructures/Queue.h"
 using namespace std;
 
-// ── FILE HANDLER ─────────────────────────────────────────────
+// FILE HANDLER
 // Reads all three input text files
 // Fills Array LinkedList and Queue with data
-// No file reading means no data in the system
-// Teacher question: why use files?
-// Answer: project guidelines require file based input
-
 struct FileHandler {
 
-    // ── loadSystems ───────────────────────────────────────────
+    // loadSystems 
     // Opens systems.txt and reads each line
     // Each line has SystemName and VulnerabilityLevel
     // Adds each system into the Array
-    void loadSystems(SystemArray& systems) {
+    void loadSystems(SystemArray& systems) 
+   {
         ifstream file("input/systems.txt");
 
-        if (!file.is_open()) {
+        if (!file.is_open()) 
+        {
             cout << "[ERROR] Cannot open systems.txt" << endl;
             return;
         }
 
         string line;
-        while (getline(file, line)) {
+        while (getline(file, line)) 
+        {
             if (line.empty()) continue;
 
             stringstream ss(line);
@@ -42,22 +41,24 @@ struct FileHandler {
         cout << "  Total systems: " << systems.count << endl;
     }
 
-    // ── loadThreats ───────────────────────────────────────────
+    // loadThreats 
     // Opens threats.txt and reads each line
     // Each line has SystemName ThreatName Type and Severity
-    // Finds the system in Array then adds threat to
-    // that system LinkedList
-    void loadThreats(SystemArray& systems) {
+    // Finds the system in Array then adds threat to that system LinkedList
+    void loadThreats(SystemArray& systems) 
+{
         ifstream file("input/threats.txt");
 
-        if (!file.is_open()) {
+        if (!file.is_open()) 
+        {
             cout << "[ERROR] Cannot open threats.txt" << endl;
             return;
         }
 
         string line;
         int count = 0;
-        while (getline(file, line)) {
+        while (getline(file, line)) 
+        {
             if (line.empty()) continue;
 
             stringstream ss(line);
@@ -68,7 +69,8 @@ struct FileHandler {
             getline(ss, sevStr,  ',');
 
             SystemNode* sys = systems.findByName(sysName);
-            if (sys != nullptr) {
+            if (sys != nullptr) 
+            {
                 sys->threats.insert(thrName, type, stoi(sevStr));
                 cout << "  [+] Threat added: " << thrName
                      << " -> " << sysName << endl;
@@ -79,22 +81,25 @@ struct FileHandler {
         cout << "  Total threats: " << count << endl;
     }
 
-    // ── loadAssignments ───────────────────────────────────────
+    // loadAssignments
     // Opens assignments.txt and reads each line
     // Each line has SystemName and ThreatName
     // Adds each as an AttackJob into the Queue
-    // First line in file = first job in queue = proves FIFO
-    void loadAssignments(Queue& queue) {
+    // First line in file = first job in queue 
+    void loadAssignments(Queue& queue) 
+{
         ifstream file("input/assignments.txt");
 
-        if (!file.is_open()) {
+        if (!file.is_open()) 
+        {
             cout << "[ERROR] Cannot open assignments.txt" << endl;
             return;
         }
 
         string line;
         int count = 0;
-        while (getline(file, line)) {
+        while (getline(file, line)) 
+        {
             if (line.empty()) continue;
 
             stringstream ss(line);
@@ -111,7 +116,7 @@ struct FileHandler {
         cout << "  Total queued: " << count << endl;
     }
 
-    // ── loadAll ───────────────────────────────────────────────
+    // loadAll 
     // Loads all three files in correct order
     // Systems must be loaded first so threats can find them
     void loadAll(SystemArray& systems, Queue& queue) {
