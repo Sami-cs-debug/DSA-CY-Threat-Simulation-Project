@@ -1,107 +1,109 @@
 #include <iostream>
 #include <string>
-#include "Array.h"
 using namespace std;
 
-// ── LINEAR SEARCH ─────────────────────────────────────────────
-// Searches for a system by name
-// Scans array one by one from start to end
-// Does not need array to be sorted
-// Teacher question: what is linear search?
-// Answer: check every element one by one until found
-// Best case: found at position 0
-// Worst case: found at last position or not found
+struct BSTNode {
+    string threatName;
+    string type;
+    int severity;
+    BSTNode* left;
+    BSTNode* right;
 
-SystemNode* linearSearch(SystemArray& systems, string name) {
+    BSTNode(string n, string t, int s) {
+        threatName = n;
+        type = t;
+        severity = s;
+        left = nullptr;
+        right = nullptr;
+    }
+};
 
-    cout << "\n===== LINEAR SEARCH =====" << endl;
-    cout << "Searching for: " << name    << endl;
-    cout << "Scanning array one by one"  << endl;
-    cout << "-------------------------"  << endl;
+struct BST {
+    BSTNode* root;
 
-    for (int i = 0; i < systems.count; i++) {
+    // Tree starts empty
+    BST() {
+        root = nullptr;
+    }
 
-        // Show each step of the search
-        cout << "Checking [" << i + 1 << "] "
-             << systems.data[i].name << "..." << endl;
+    // Insert node
+    BSTNode* insertHelper(BSTNode* node,
+                          string name,
+                          string type,
+                          int severity) {
 
-        if (systems.data[i].name == name) {
-            cout << "\n[FOUND] " << systems.data[i].name
-                 << " | Vulnerability: "
-                 << systems.data[i].vulnerabilityLevel
+        if (node == nullptr) {
+            return new BSTNode(name, type, severity);
+        }
+
+        // Smaller severity → left
+        if (severity < node->severity) {
+            node->left = insertHelper(node->left,
+                                      name, type, severity);
+        }
+
+        // Greater severity → right
+        else if (severity > node->severity) {
+            node->right = insertHelper(node->right,
+                                       name, type, severity);
+        }
+
+        return node;
+    }
+
+    // Add threat
+    void insert(string name, string type, int severity) {
+        root = insertHelper(root, name, type, severity);
+    }
+
+    // In-order traversal
+    void inOrderHelper(BSTNode* node, int& rank) {
+        if (node == nullptr) return;
+
+        inOrderHelper(node->left, rank);
+
+        cout << "RANK " << rank
+             << " | Severity: " << node->severity
+             << " | " << node->threatName
+             << " | Type: " << node->type
+             << endl;
+
+        rank++;
+
+        inOrderHelper(node->right, rank);
+    }
+
+    // Display threats
+    void inOrderTraversal() {
+        cout << "\n===== THREAT PRIORITY REPORT =====" << endl;
+
+        int rank = 1;
+        inOrderHelper(root, rank);
+
+        cout << "Total threats ranked: " << rank - 1 << endl;
+    }
+
+    // Search threats
+    void searchHelper(BSTNode* node, int threshold) {
+        if (node == nullptr) return;
+
+        searchHelper(node->left, threshold);
+
+        if (node->severity >= threshold) {
+            cout << "  -> " << node->threatName
+                 << " | Severity: " << node->severity
+                 << " | Type: " << node->type
                  << endl;
-            cout << "Threats on this system:" << endl;
-            systems.data[i].threats.display();
-            return &systems.data[i];
         }
+
+        searchHelper(node->right, threshold);
     }
 
-    cout << "[NOT FOUND] No system named: " << name << endl;
-    return nullptr;
-}
+    // Show threats above severity
+    void findThreatsAbove(int threshold) {
+        cout << "\n===== THREATS AT SEVERITY >= "
+             << threshold << " =====" << endl;
 
-// ── BINARY SEARCH ─────────────────────────────────────────────
-// Searches for systems above a vulnerability threshold
-// Array MUST be sorted first using bubble sort
-// Divides array in half each time - much faster than linear
-// Teacher question: what is binary search?
-// Answer: divide array in half, check middle, go left or right
-// Much faster than linear - works only on sorted arrays
-
-void binarySearch(SystemArray& systems, int threshold) {
-
-    cout << "\n===== BINARY SEARCH =====" << endl;
-    cout << "Looking for vulnerability >= " << threshold << endl;
-    cout << "Array must be sorted first"    << endl;
-    cout << "Dividing array in half each step" << endl;
-    cout << "-------------------------"     << endl;
-
-    int low  = 0;
-    int high = systems.count - 1;
-    bool found = false;
-
-    while (low <= high) {
-        // Find middle position
-        int mid = (low + high) / 2;
-
-        cout << "Low=" << low
-             << " Mid=" << mid
-             << " High=" << high
-             << " | Checking: "
-             << systems.data[mid].name
-             << " (Vulnerability: "
-             << systems.data[mid].vulnerabilityLevel
-             << ")" << endl;
-
-        if (systems.data[mid].vulnerabilityLevel == threshold) {
-            found = true;
-            break;
-        }
-        // If mid vulnerability is higher go right
-        else if (systems.data[mid].vulnerabilityLevel > threshold) {
-            low = mid + 1;
-        }
-        // If mid vulnerability is lower go left
-        else {
-            high = mid - 1;
-        }
+        searchHelper(root, threshold);
     }
-
-    // Show all systems at or above threshold
-    cout << "\nSystems with vulnerability >= "
-         << threshold << ":" << endl;
-
-    bool any = false;
-    for (int i = 0; i < systems.count; i++) {
-        if (systems.data[i].vulnerabilityLevel >= threshold) {
-            cout << "  -> " << systems.data[i].name
-                 << " | Vulnerability: "
-                 << systems.data[i].vulnerabilityLevel
-                 << endl;
-            any = true;
-        }
-    }
-    if (!any) {
-        cout << "No systems found above threshold." << endl;
-    }
-}
+};
